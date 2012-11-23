@@ -13,7 +13,7 @@ temp
         |-- niezrealizowane
         `-- zrealizowane
 ```sh
-mkdir -p temp/dom
+     mkdir -p temp/dom
      mkdir -p temp/nauka/{c,logo,pascal}
      mkdir -p temp/praca/{dokumenty,zlecenia}
      mkdir -p temp/praca/zlecenia/{niezrealizowane,zrealizowane}
@@ -22,22 +22,51 @@ mkdir -p temp/dom
         
 
 2. Przejdź do katalogu dom i utwórz katalog wazne-sprawy.
+```sh
+     cd dom
+     mkdir wazne-sprawy
+```
 
 3. Wejdź do katalogu wazne-sprawy i utwórz tam pusty plik rachunki.txt.
+```sh
+     cd wazne-sprawy
+     touch rachunki.txt
+```
 
 4. Będąc w katalogu wazne-sprawy skopiuj plik rachunki.txt do katalogu zrealizowane.
+```sh
+    cp rachunki.txt ../../praca/zlecenia/zrealizowane/rachunki.txt
+```
 
 5. Przejdź do katalogu zrealizowane i zmień nazwę pliku rachunki.txt na wykonano.txt.
-
-Polecenia: split, cat, diff
+```sh
+     cd ../..
+     cd praca/zlecenia/zrealizowane
+     mv rachunki.txt wykonano.txt
+```
 
 6. Utwórz plik wykonano.txt wielkości 11 bajtów, następnie podziel go pliki wielkości 5 bajtów. W ten sposób otrzymasz 3 pliki. (split)
+```sh
+    cat > wykonano.txt 
+    12345678901 (potem wcisnąć Ctrl+D)
+    split -b 5 wykonano.txt
+```
 
 7. Będąc w katalogu logo skopiuj powyżej otrzymane 3 pliki do katalogu dokumenty.
+```sh
+    cp ../../praca/zlecenia/zrealizowane/x* ../../praca/dokumenty
+```
 
 8. Będąc w katalogu dokumenty połącz skopiowane 3 pliki w plik odtworzono.txt, tak aby otrzymać plik o zawartości identycznej z wykonano.txt. Następnie plik odtworzono.txt skopiuj do katalogu wazne-sprawy.
+```sh
+     cat xaa xab xac > odtworzono.txt
+     cp odtworzono.txt ../../dom/wazne-sprawy/odtworzono.txt
+```
 
 9. Będąc w katalogu wazne-sprawy sprawdź, czy są jakieś różnice w zawartości plików wykonano.txt i odtworzono.txt.
+```sh
+     diff -a ../../praca/zlecenia/zrealizowane/wykonano.txt odtworzono.txt
+```
 
 10. Wyświetl kalendarz na październik 2009 r. (cal)
 
@@ -49,6 +78,10 @@ ni po wt śr cz pi so  ni po wt śr cz pi so  ni po wt śr cz pi so
  6  7  8  9 10 11 12   4  5  6  7  8  9 10   8  9 10 11 12 13 14
 ...                   ...                   ...
 
+```sh
+    cal 10 2009
+```
+
 Wyświetl kalendarz na październik, listopad i grudzień 2009 r. w taki sposób:
 
      październik             listopad               grudzień
@@ -57,6 +90,10 @@ ni po wt śr cz pi so   ni po wt śr cz pi so   ni po wt śr cz pi so
  4  5  6  7  8  9 10    8  9 10 11 12 13 14    6  7  8  9 10 11 12
 11 12 13 14 15 16 17   15 16 17 18 19 20 21   13 14 15 16 17 18 19
 ...                    ...                    ...
+
+```sh
+    cal -3 2009
+```
 
 I jeszcze raz na wrzesień i październik oraz na październik i listopad 2009 r z miesiącami obok siebie (cal, cut?):
 
@@ -67,7 +104,15 @@ ni po wt śr cz pi so   ni po wt śr cz pi so
 11 12 13 14 15 16 17   15 16 17 18 19 20 21
 ...                    ...
 
+```sh
+    cal 11 2009 -3m
+```
+
 11. Jaki był dzień tygodnia 25 maja 1975 r. (cal i date)
+
+```sh
+    date -d 1975-05-25 +%A
+```
 
 
 
