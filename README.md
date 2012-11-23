@@ -72,37 +72,17 @@ temp
 
 Wyświetl kalendarz na wrzesień, październik i listopad 2009 r. z miesiącami obok siebie (cal):
 
-    wrzesień 2009       październik 2009        listopad 2009
-ni po wt śr cz pi so  ni po wt śr cz pi so  ni po wt śr cz pi so
-       1  2  3  4  5               1  2  3   1  2  3  4  5  6  7
- 6  7  8  9 10 11 12   4  5  6  7  8  9 10   8  9 10 11 12 13 14
-...                   ...                   ...
-
 ```sh
     cal 10 2009
 ```
 
 Wyświetl kalendarz na październik, listopad i grudzień 2009 r. w taki sposób:
 
-     październik             listopad               grudzień
-ni po wt śr cz pi so   ni po wt śr cz pi so   ni po wt śr cz pi so
-             1  2  3    1  2  3  4  5  6  7          1  2  3  4  5
- 4  5  6  7  8  9 10    8  9 10 11 12 13 14    6  7  8  9 10 11 12
-11 12 13 14 15 16 17   15 16 17 18 19 20 21   13 14 15 16 17 18 19
-...                    ...                    ...
-
 ```sh
     cal -3 2009
 ```
 
 I jeszcze raz na wrzesień i październik oraz na październik i listopad 2009 r z miesiącami obok siebie (cal, cut?):
-
-     październik             listopad
-ni po wt śr cz pi so   ni po wt śr cz pi so
-             1  2  3    1  2  3  4  5  6  7
- 4  5  6  7  8  9 10    8  9 10 11 12 13 14
-11 12 13 14 15 16 17   15 16 17 18 19 20 21
-...                    ...
 
 ```sh
     cal 11 2009 -3m
@@ -121,20 +101,56 @@ ni po wt śr cz pi so   ni po wt śr cz pi so
 
 
 1. Wyświetl na ekran 2 pierwsze wiersze pliku program.c. (head)
+```sh
+    head -n 2 program.c
+```
 
 2. Wyświetl na ekran 4 ostatnie wiersze pliku program.c. (head, tail)
+```sh
+    tail -n 4 program.c
+```
 
 3. W pliku program.c znajdź wszystkie wiersze z wystąpieniem słowa „main”. (grep)
+```sh
+    grep "main" program.c
+```
 
 4. Plikowi program.c nadaj następujące uprawnienia: właściciel – czytanie, pisanie, grupa – czytanie, pozostali użytkownicy: brak uprawnień. (chmod)
+```sh
+    chmod 650 program.c
+```
+```sh
+    chmod u+rw program.c
+    chmod g+r program.c
+    chmod o-rwx program.c
+```
 
 5. Będąc w katalogu temp przenieś katalog wazne-sprawy do katalogu praca.
+```sh
+    mv dom/wazne-sprawy praca/wazne-sprawy
+```
 
 6. Zarchiwizuj cały katalog temp. (zip i tar)
+```sh
+    tar -cvf temp.tar temp
+    gzip temp.tar
+```
 
 7. Usuń katalog temp.
+```sh
+    zip -r temp.zip temp
+```
 
 8. Odtwórz z archiwum katalog temp. (unzip i tar)
+```sh
+    tar -zxf temp.tar.gz
+     unzip temp.zip
+```
+9. Posprzątaj na swoim koncie.
+```sh
+     cd ~/tmp
+     rm -rf *
+```
 
 
 
@@ -142,23 +158,80 @@ ni po wt śr cz pi so   ni po wt śr cz pi so
 
 
 1. Wyświetl plik /etc/passwd z podziałem na strony przyjmując, że strona na 5 linii tekstu. (raczej more niż less)
+```sh
+     more -5 /etc/passwd
+```
 
 2. Korzystając z polecenia cat utwórz plik tekst3.txt, który będzie składał się z zawartości pliku tekst1.txt, ciągu znaków podanego ze standardowego wejścia (klawiatury) i pliku tekst2.txt.
+```sh
+    cat tekst1.txt - tekst2.txt > tekst3.txt
+```
+```sh
+    cat tekst1.txt > tekst3.txt
+    cat >> tekst3.txt
+    cat tekst2.txt >> tekst3.txt
+```
 
 3. Wyświetl po 5 pierwszych linii wszystkich plików w swoim katalogu domowym w taki sposób, aby nie były wyświetlane ich nazwy.
+```sh
+    head $HOME/* -n 5 -q
+```
+```sh
+    head -qn 5 *
+```
 
 4. Wyświetl linie o numerach 3, 4 i 5 z pliku /etc/passwd.
+```sh
+    head -n 5 /etc/passwd | tail -n 3
+```
 
 5. Wyświetl linie o numerach 7, 6 i 5 od końca pliku /etc/passwd.
+```sh
+    tail -n 7 /etc/passwd | head -n 3
+```
 
 6. Wyświetl zawartość pliku /etc/passwd w jednej linii.
+```sh
+    cat /etc/passwd | tr "n" " "
+```
 
 7. Za pomocą filtru tr wykonaj modyfikację pliku plik.txt, polegającą na umieszczeniu każdego słowa w osobnej linii.
+```sh
+    cat plik.txt | tr " \t" "\n"
+```
 
 8. Zlicz wszystkie pliki znajdujące się w katalogu /etc i jego podkatalogach.
+```sh
+    find /etc -type f 2> dev/null/ wc -l
+```
+```sh
+     find /etc -type f 2> errors | wc -l
+```
+```sh
+    find /etc -type f -follow | wc -l
+```
+```sh
+    head -n 0 /etc/* | tr -s '[n*2]' 'n' | wc -l
+```
+
 
 9. Napisać polecenie zliczające ilość znaków z pierwszych trzech linii pliku /etc/passwd.
-find /etc |head -3 |wc| tr '''\n'| tail -1
+```sh
+     find /etc/ | head -3 | wc | tr '''\n' | tail -1
+```
+```sh
+    find /etc/ | head -3 | wc -c
+```
+```sh
+     cat /etc/passwd/ | head -n 3 | wc -m  
+
+```
+```sh
+    head /etc/passwd -n 3 | wc -c
+```
+```sh
+    cut /etc/passwd | head -n 3 | wc -n
+```
 
 
 
