@@ -238,7 +238,163 @@ I jeszcze raz na wrzesień i październik oraz na październik i listopad 2009 r
 #Laboratorium 4
 
 
+1. Wyświetl listę plików z aktualnego katalogu, zamieniając wszystkie małe litery na duże.
+```sh
+    ls | tr [:lower:] [:upper:] (nie obsługuje znaków narodowych)
+```
+```sh
+    ls | tr a-z A-Z
+```
+```sh
+    ls | tr [:lower:]ąęćłśżź [:upper:]ĄĘŁŚŻŹ
+```
+
+2. Wyświetl listę praw dostępu do plików w aktualnym katalogu, ich rozmiar i nazwę.
+```sh
+    ls -l | awk '{print $1,$5,$9}'
+```
+```sh
+    find . -type f -exec ls -l '{}' ';' | cut -d ' ' -f1,5,9 (nie działa dla plików z datami dwucyfrowymi)
+```
+```sh
+    ls --format=long --human-readable
+```
+```sh
+    find . -printf "Plik: %f Rozmiar: %s Prawa: %M \n" -maxdepth 1
+```
+
+3. Wyświetl listę plików w aktualnym katalogu, posortowaną według rozmiaru pliku.
+```sh
+    ls -l | sort -k5,5
+```
+```sh
+    ls -lrS
+```
+```sh
+    find . -maxdepth 1 -not - type d -exec ls -l '{}' ';' | sort -n -t ' ' -k6,6
+```
+```sh
+    ls --sort=size -1
+```
+
+4. Wyświetl zawartość pliku /etc/passwd posortowaną według numerów UID w kolejności od największego do najmniejszego.
+```sh
+    cat /etc/passwd | sort -n -t ':' -k3,3
+```
+```sh
+    sort -t : -n -k3 -r /etc/passwd
+```
+```sh
+    cat /etc/passwd | sort -r -t: -g -k 3
+```
+```sh
+    sort -t : -k3 -nr /etc/passwd
+```
+```sh
+    cat /etc/passwd/ | sort --reverse --general-numeric-sort
+```
+5. Wyświetl zawartość pliku /etc/passwd posortowaną najpierw według numerów GID w kolejności od największego do najmniejszego, a następnie UID.
+```sh
+    sort -t : -k4 -r /etc/passwd | sort -t : -k3
+```
+```sh
+    cat /etc/passwd | sort --field-separator=":"
+```
+```sh
+    cat /etc/passwd | sort -r --field-separator=":" -g -k 4,3
+```
+
+6. Podaj liczbę plików każdego użytkownika.
+```sh
+    find $HOME -not -type d | wc -l
+```
+```sh
+    find / -printf "%u\n" 2> /dev/null | sort | uniq -c
+```
+
+7. Sporządź statystykę praw dostępu (dla każdego z praw dostępu podaj ile razy zostało ono przydzielone).
+```sh
+    find -printf "%m\n" | sort | uniq -c
+```
+
+8. Czy potrafisz odpowiedzieć jaki będzie efekt wykonania poniższych poleceń?
+
+ls -l > lsout.txt                           #  1
+```sh
+    Utwotrzenie pliku lsout.txt i wypelnienie jej lista plikow w akutalnym katalogu
+```
+ls -la >> lsout.txt                         #  2
+```sh
+    Dopisuje do pliku lsout.txt liste uruchomionych procesów
+```
+ps >> psout.txt                             #  3
+```sh
+    Dopisuje ilosc wolnej pamięci
+```
+ 
+ 
 
 #Laboratorium 5
-#Laboratorium 6 
+
+
+
+1. Znajdź w swoim katalogu domowym (bez podkatalogów) wszystkie pliki, które zostały zmodyfikowane w ciągu ostatnich dziesięciu dni i wyświetl ich nazwy.
+```sh
+    find ~/ -maxdepth 1 -mtime -10 -type f (maxdepth podać pierwsze w kolejności)
+```
+
+2. Znajdź wszystkie pliki zwykłe w systemie, które mają w nazwie ciąg znaków „conf” i wyświetl ich nazwy na ekranie.
+```sh
+    find  /etc -name \*config\* -type f 2> /dev/null
+```
+
+3. Znajdź w swoim katalogu domowym wszystkie pliki, które nie były używane w ciągu ostatnich 20 dni.
+```sh
+    find ~/ \( -type d -name ".git" -prune \) -o \( -type f -print \)
+```
+```sh
+    find ~/ -atime 20 (nie do końca)
+```
+```sh
+    find . -path '*/.git/*' - prune -o -print
+```
+```sh
+    -mtime -20 | egrep -v '/\.git' (praktyczniejsza wersja z mtime)
+```
+```sh
+    find . ! -regex ".*/\.git/?.*"
+```
+4. Znajdź w katalogu /etc wszystkie niepuste podkatalogi i pliki o nazwach zaczynających się na literę „a”.
+```sh
+    find /etc \( -type f -and -name a* \) -or \( -type d -and ! -empty \) 2> /dev/null
+```
+```sh
+    find /etc\(-type d -and ! empty\) -or \(-type f -and -name a*\) 2> /dev/null
+```
+Zadania różne
+
+5. Z bieżącego katalogu usuń pliki, których nazwa zaczyna się na literę „x” i zawiera dokładnie trzy znaki.
+```sh
+    rm x??
+```
+6. Skonstruuj polecenie tworzące katalog, którego nazwą będzie aktualna (w momencie wywołania) systemowa data w formacie rrrr-mm-dd.
+```sh
+    mkdir date +%Y-%m-%d
+```
+
+
+
+#Laboratorium 6
+
+
+
+1. W pliku plik.txt znajdź wiersze zawierające co najmniej jeden znak.
+
+2. Znajdź w plikach pl* wiersze rozpoczynające się od cyfry.
+
+3. Znajdź pliki, zawierające wiersz w którym na 9 pozycji występuje litera r.
+
+4. Policz, ilu użytkowników systemu używa powłoki bash (zgodnie z zapisami w pliku /etc/passwd).
+
+5. Znajdź wiersze zawierające liczby rzymskie w pliku plik.txt.
 #Laboratorium 7
