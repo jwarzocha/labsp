@@ -389,12 +389,106 @@ Zadania różne
 
 
 1. W pliku plik.txt znajdź wiersze zawierające co najmniej jeden znak.
+```sh
+    grep . {1,} plik.txt
+```
 
 2. Znajdź w plikach pl* wiersze rozpoczynające się od cyfry.
+```sh
+    grep ^[0-9] pl*
+```
 
 3. Znajdź pliki, zawierające wiersz w którym na 9 pozycji występuje litera r.
+```sh
+    ls -1 | grep -E '^.{8}r.*'
+```
 
 4. Policz, ilu użytkowników systemu używa powłoki bash (zgodnie z zapisami w pliku /etc/passwd).
+```sh
+    grep -c bash /etc/passwd
+```
 
 5. Znajdź wiersze zawierające liczby rzymskie w pliku plik.txt.
+```sh
+    egrep "(X|D|C|M|V|L|I){1,}" plik.txt
+```
+
+
+
 #Laboratorium 7
+
+
+
+1. W bieżącym katalogu zamienić rozszerzenia wszystkich plików z rozszerzeniem htm na html. Jeżeli w nazwie pliku istnieje spacja, to należy zamienić ją na znak podkreślenia.
+```sh
+    #!/bin/bash
+
+     for plik1 in *.htm
+     do
+       plik2=`echo "$plik1"l | tr " " "_"`
+       mv "$plik1"  "$plik2"
+
+     done
+     exit 0
+```
+
+2. Napisać skrypt zawierający funkcję obliczającą silnię. Następnie należy obliczyć silnię z liczby, która jest argumentem skryptu. W przypadku niepoprawnego argumentu należy wypisać odpowiedni komunikat.
+```sh
+    #!/bin/bash
+     if [ $# -eq 0 ]
+     then
+       echo "Wpisz: bash $0 liczba_naturalna"
+       exit 1
+     fi
+     silnia=1
+     for (( i=1; i<=$1; i++ ))
+     do
+       silnia=`expr $silnia \* $i`
+     done
+     echo "Silnia z liczby $1 = $silnia"
+     exit 0
+```
+
+3. Napisać skrypt zbierający jak najwięcej informacji o użytkowniku, którego login jest argumentem skryptu. Jeżeli skrypt nie ma argumentu, to należy użyć login osoby uruchamiającej skrypt.
+```sh
+    if [ $# -ge 1 ];
+     then
+         user=$1
+     else
+         user=`whoami`
+     fi
+     id $user 2> /dev/null > /dev/null
+     if [ $? -eq 0 ];
+     then
+         echo "Uzytkownik nazywa sie $user"
+         users | grep -w "$user" > /dev/null 2> /dev/null
+         if [ $? -eq 0 ];
+         then
+         echo "Jest aktualnie zalogowany"
+         else
+         echo "Nie jest aktualnie zalogowany"
+         fi
+         echo "Nalezy do grup: "`id $user -gn`
+         user_passwd=`cat /etc/passwd | grep -w $user`
+         if [ $? -eq 0 ];
+         then
+         home_dir=`echo $user_passwd | cut -d ":" -f 6`
+         shell=`echo $user_passwd | cut -d ":" -f 7`
+         echo "Katalog domowy to $home_dir a powloka jakiej uzywa to $shell"
+         else
+         echo "W pliku /etc/passwd nie ma informacji o tym uzytkowniku"
+         fi
+     else
+         echo "Uzytkownik $user nie istnieje"
+     fi
+```
+
+4. Napisz skrypt usuwający z katalogu domowego i jego podkatalogów wszystkie pliki zwykłe o nazwie 'core' starsze niż 3 dni.
+```sh
+    #!/bin/bash
+
+     elif=`find ~ -name "core" -ctime +3  -type f`
+     rm "$elif"
+     echo "Zrobione"
+     exit 0
+```
