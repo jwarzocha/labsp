@@ -492,3 +492,46 @@ Zadania różne
      echo "Zrobione"
      exit 0
 ```
+
+
+#skrypty
+
+1.skrypt wyliczający n-ty wyraz ciagu fibonacciego
+```sh
+#!/bin/bash
+ if [ $# -eq 0 ]
+ then
+   echo "Wpisz: bash $0 liczba_naturalna"
+   exit 1
+ fi
+ x=0 # <=teraz jest to zerowy wyraz ciagu fib
+ y=1 # <=teraz jest to pierwszy wyraz ciagu fib
+ for (( i=2; i<=$1; i++ ))# zaczynamy od 2 bo obliczamy anjpierw drugi wyraz c.f.
+ # pętla bedzie działac az dojdzie do podanej liczby naturalnej 
+ do
+   a=$[x+y] #dodajemy dwa poprzednie wyrazy c.f.
+    		#z ich dodanie powstaje a
+   x=$y # tearz pierwszym poprzednim wyrazem jest y
+   y=$a # a drugim jest a aleprzy wyjsciu z petli a jest n-tym
+		#wyrazem ciagu fib
+ done
+ echo " $1 wyraz ciągu Fibonaciego = $a"
+ exit 0
+ ```
+ 2.skrypt liczacy ile lini napisałes we wszystkich programach c i c++
+ ```sh
+ #!/bin/bash
+szukaj=(`find -type f \( -name "*.c" -o -name "*.cpp" \)`) #-type f powoduje wyswietlenie tylko plikow
+#wyszukuje ^pliki c i c++
+#liczy liczbe wszystkich plikow v
+echo "Liczba plikow: ${#szukaj[*]}"
+a=0 # poczatkowa wartosc liczby linijek
+for(( i=0; i<${#szukaj[*]}; i++ ))
+do 
+  LINES=`wc -l < ${szukaj[i]}` #liczba linijek w pliku numer i
+  echo "Plik ${szukaj[i]} $LINES" #wypisuje liczbe linijek w i tym pliku
+  a=$[LINES+a] #sumuje linijki
+done
+echo "Napisałes juz $a linijek" #wypisuje sume linijek
+exit 0
+```
