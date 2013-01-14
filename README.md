@@ -535,3 +535,10 @@ done
 echo "Napisałes juz $a linijek" #wypisuje sume linijek
 exit 0
 ```
+
+robi to samo co wyzej
+```sh
+#!/bin/bash
+  find -type f \( -name "*.c" -o -name "*.cpp" \) -print0 | wc -l --files0-from=- 
+ exit 0
+```
