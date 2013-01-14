@@ -542,3 +542,32 @@ robi to samo co wyzej
   find -type f \( -name "*.c" -o -name "*.cpp" \) -print0 | wc -l --files0-from=- 
  exit 0
 ```
+```sh
+#!/bin/bash
+	
+	echo "$#"
+	
+	case $# in
+		"1") szukaj=(`find $1 -type f \( -name "*.c" -o -name "*.cpp" \)`);; #-type f powoduje wyswietlenie tylko plikowszukaj=(`find  -type f \( -name "*.c" -o -name "*.cpp" \)`) #-type f powoduje wyswietlenie tylko plikow
+		"2") szukaj=(`find $2 -type f \( -name "*.c" -o -name "*.cpp" \)`);; #-type f powoduje wyswietlenie tylko plikow
+		"3") szukaj=(`find $3 -type f \( -name "*.c" -o -name "*.cpp" \)`);; #-type f powoduje wyswietlenie tylko plikow
+	esac
+	
+	#wyszukuje ^pliki c i c++
+	#liczy liczbe wszystkich plikow v
+	echo "Liczba plikow: ${#szukaj[*]}"
+	a=0 # poczatkowa wartosc liczby linijek
+	for(( i=0; i<${#szukaj[*]}; i++ ))
+	do 
+		if [[ $1 == "-c" ]] ; then
+			LINES=`cat ${szukaj[i]} | grep -v "^$" | grep -v "//" | wc -l ` #liczba linijek w pliku numer i
+		else
+			LINES=`wc -l < ${szukaj[i]}` #liczba linijek w pliku numer i
+		fi
+		echo "Plik ${szukaj[i]} $LINES" #wypisuje liczbe linijek w i tym pliku
+		a=$[LINES+a] #sumuje linijki
+	done
+	echo "Napisałes juz $a linijek" #wypisuje sume linijek
+	exit 0
+
+```
